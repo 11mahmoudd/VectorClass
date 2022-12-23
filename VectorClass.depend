@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1671781218 source:c:\users\dell\desktop\new folder (2)\kl\vectorclass\main.cpp
+	"VectorClass.h"
+	<iostream>
+
+1671574604 source:c:\users\dell\desktop\new folder (2)\kl\vectorclass\vectorclass.cpp
+	"VectorClass.h"
+
+1671781307 c:\users\dell\desktop\new folder (2)\kl\vectorclass\vectorclass.h
+	<bits/stdc++.h>
+
