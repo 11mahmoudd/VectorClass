@@ -2,53 +2,40 @@
 #define VECTORCLASS_H
 
 #include <bits/stdc++.h>
-
 using namespace std;
-// Creating a template to use any data type in this program.
-//data type is called T
-template <typename T>
-//creating class.
+
+template <class T>
 class VectorClass
 {
-    // Create 3 private variables a T array named vect and 2 integer variables sizee and capacityy.
-    private:
-        T* vect;
-        int sizee ,capacityy;
-    protected:
-    public:
-        //Constructor that takes integer parameter.
-        VectorClass(int num)
-        {
-            //set the capacity of the vector.
-            capacityy=num;
-            vect=new T [capacityy];
-            sizee=0;
+private:
+    T* vect;
+    int sizee ,capacityy;
+public:
+    VectorClass(int num)
+    {
+        capacityy=num;
+        vect=new T [capacityy];
+        sizee=0;
+    }
+    VectorClass(T* arr, int n) {
+        sizee = n;
+        vect = new T[sizee];
+        for (int x = 0; x < sizee; x++) {
+            vect[x] = arr[x];
         }
-        //Constructor that takes array and integer parameters.
-        VectorClass(T* arr, int n)
+    }
+
+    VectorClass(const VectorClass &new_vect)
         {
-            //set size of the vector and fill the vector with elements in given array.
-            sizee=n;
-            vect= new T [sizee];
-            for(int x=0;x<sizee;x++)
-            {
-                vect[x]=arr[x];
-            }
-        }
-        //Constructor that takes class data type parameter.
-        VectorClass(const VectorClass& new_vect)
-        {
-            //Fill the new vector with old vector and set the new vector size and capacity as the old one.
-            sizee=new_vect.sizee;
-            capacityy=new_vect.capacityy;
-            vect= new T[capacityy];
-            for(int x=0;x<sizee;x++)
-            {
-                vect[x]= new_vect.vect[x];
+            sizee = new_vect.sizee;
+            capacityy = new_vect.capacityy;
+            vect = new T[capacityy];
+            for (int x = 0; x < sizee; x++) {
+                vect[x] = new_vect.vect[x];
             }
 
         }
-        // Copy assignment.
+
         VectorClass &operator=(const VectorClass& new_vect)
         {
             delete [] vect;
@@ -63,13 +50,13 @@ class VectorClass
             }
             return *this;
         }
-        // Move assignment.
+
         VectorClass &operator=(const VectorClass&& new_vect)
         {
             delete [] vect;
             sizee= move (new_vect.sizee);
-            capacity= move(new_vect.capacity);
-            vect= new T[capacity];
+            capacity= move(new_vect.capacityy);
+            vect= new T[capacityy];
             for(int x= 0 ;x < sizee ; x++)
             {
                 vect[x]= move(new_vect.vect[x]);
@@ -77,8 +64,6 @@ class VectorClass
             return *this;
         }
 
-        // Access item by reference.
-         // Throw an exception if out of range.
         T& operator[](int i)
         {
             if( i >= 0 || i <= sizee-1)
@@ -94,29 +79,14 @@ class VectorClass
             }
             catch (int n)
             {
-                cout<<"wrong index, out of range. "<<endl;
+                cout<<"wrong index"<<endl;
             }
 
         }
 
-        // Add item to end of vector & return # of items
-        // Increase capacity of needed
-        int push_back(T element)
+        bool operator==(const VectorClass<T>& vec)
         {
-            resize();
-            vect[sizee++] = element ;
-            return sizee ;
-        }
-
-        T pop_back()
-        {
-
-        }
-
-        // Return true if a vector ==  another vector.
-        bool operator ==(const VectorClass<T>& vec)
-        {
-            if (sizee == vec.sizee)
+            if (sizee == vect.sizee)
             {
                 for(int x = 0 ; x < sizee ; x++)
                 {
@@ -136,9 +106,6 @@ class VectorClass
                 return false;
             }
         }
-
-        // Compares item by item.
-        // Return true if first different item in this is < in other.
         bool operator< (const VectorClass<T>& vec)
         {
             if(sizee==vec.sizee)
@@ -156,50 +123,38 @@ class VectorClass
                     }
                 }
             }
-            else if(sizee < vec.sizee)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
-        // Return current size of vector.
         int size() const
         {
             return sizee;
         }
 
-        // Return size of current allocated array.
         int capacity() const
         {
             return capacityy;
         }
 
-        // Relocate to bigger space.
         int resize()
         {
             if(sizee == capacityy)
             {
                 capacityy *=2;
-                T* new_vec = new T[capacityy];
+                T* new_vect = new T[capacityy];
                 for(int x = 0 ; x < sizee ; x++)
                 {
-                    new_vec[x]=vect[x];
+                    new_vect[x]=vect[x];
                 }
                 delete vect;
                 for(int x = 0 ; x < sizee ; x++)
-                 {
-                     vect[x]=new_vec[x];
-                 }
+                {
+                    vect[x]=new_vect[x];
+                }
 
             }
             return capacityy ;
         }
 
-        // Return true if size is 0.
         bool empty()
         {
             if(sizee==0)
@@ -212,26 +167,147 @@ class VectorClass
             }
         }
 
-        //Overload operator << to print the vector by cout.
-        friend ostream& operator << (ostream& out, VectorClass<T> vec)
+
+        friend ostream& operator << (ostream& out, VectorClass<T> vc)
         {
-            for(int x = 0 ; x < vec.sizee ; x++)
+            out << "{";
+            for(int x = 0 ; x < vc.sizee ; x++)
             {
-                out<<vec.vect[x]<<" ";
+                out<<vc.vect[x];
+                if(x != vc.sizee -1){
+                    out << "," ;
+                }
             }
+            out << "}";
             return out;
 
         }
 
-        // Delete allocated memory
         virtual ~VectorClass()
         {
+
             delete [] vect;
+        }
+
+        void insert(T* ite,int V )
+        {
+            if(ite < this-> begin()|| ite > this-> end()){
+                cout << "out of range" ;
+
+            }
+
+            else{
+                this->push_back(0);
+                int ix = ite - begin()  ;
+                for (int i = sizee-1 ; i > ix ; i--){
+                    this-> vect[i] = this->vect[i-1];
+                }
+                this->vect[ix] = V;
+
+            }
+
+        }
+
+        int push_back (T var)
+        {
+            if(sizee < capacityy){
+                vect[sizee++] = var;
+            }
+            else
+
+            {
+                T* newvect = new T[capacityy*2];
+                capacityy *= 2;
+
+                for (int i=0; i < sizee ; i++){
+                    newvect[i] = vect[i];
+
+                }
+                delete[] vect;
+                vect = new T[capacityy];
+                for (int i =0 ; i < sizee ; i++){
+                    vect[i]= newvect[i];
+                }
+                delete[] newvect;
+                vect[sizee+1] = var;
+
+            }
+            return sizee;
+
+        }
+        T* begin()
+        {
+            return this->vect;
+        }
+        T* end()
+        {
+            return this->begin()+size()-1;
+        }
+
+
+        void clear()
+        {
+            for(int i=0 ;i < this->size();i++)
+            {
+                this->vect[i]= T();
+            }
+
+            this->sizee=0;
+        }
+
+        T pop_back() {
+            T* newvect = new T[capacityy] ;
+            for (int x = 0 ; x < sizee-1 ;x++) {
+                newvect[x] = vect[x] ;
+
+            }
+            T z = vect[sizee -1] ;
+
+            delete[]vect ;
+            vect = new T[capacityy] ;
+            sizee = sizee - 1 ;
+            for (int x = 0 ; x < sizee ; x++) {
+                vect[x] = newvect[x] ;
+
+            }
+            delete[]newvect ;
+            return z ;
+        }
+        void erase(T* ite){
+            if(ite < this-> begin() || ite > this->end() ) {
+                cout << "not in range"<<endl;
+            }
+            else {
+                int index=ite-begin();
+                for(int i=index+1;i< this->size();i++) {
+                    this->vect[i - 1] = this->vect[i];
+
+                }
+                this->sizee--;
+            }
+        }
+        void erase(T* ite1 , T* ite2){
+            if(ite1 < this-> begin() || ite2 > this->end() ) {
+                cout << "not in range"<<endl;
+            }
+
+            else {
+
+                if (ite2<ite1)
+                    return;
+                int startindex=ite1-begin();
+                int endindex=ite2-begin();
+                int counter=0;
+                for(int i = endindex+1;i< this->size();i++) {
+                    this->vect[startindex + counter] = this->vect[i];
+                    counter++;
+                }
+                this->sizee-=endindex-startindex+1;
+            }
         }
 
 
 
-
-};
+    };
 
 #endif // VECTORCLASS_H
