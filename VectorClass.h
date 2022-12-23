@@ -4,37 +4,53 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Creating a template to use any data type in this program.
+//data type is called T
+
 template <class T>
+//creating class.
 class VectorClass
 {
+// Create 3 private variables a T array named vect and 2 integer variables sizee and capacityy.
 private:
     T* vect;
     int sizee ,capacityy;
 public:
+    //Constructor that takes integer parameter.
     VectorClass(int num)
     {
+        //set the capacity of the vector.
         capacityy=num;
         vect=new T [capacityy];
         sizee=0;
     }
-    VectorClass(T* arr, int n) {
+    //Constructor that takes array and integer parameters.
+    VectorClass(T* arr, int n)
+    {
+        //set size of the vector and fill the vector with elements in given array.
         sizee = n;
         vect = new T[sizee];
-        for (int x = 0; x < sizee; x++) {
+        for (int x = 0; x < sizee; x++)
+        {
             vect[x] = arr[x];
         }
     }
 
+    //Constructor that takes class data type parameter.
     VectorClass(const VectorClass &new_vect)
         {
+            //Fill the new vector with old vector and set the new vector size and capacity as the old one.
             sizee = new_vect.sizee;
             capacityy = new_vect.capacityy;
             vect = new T[capacityy];
-            for (int x = 0; x < sizee; x++) {
+            for (int x = 0; x < sizee; x++)
+            {
                 vect[x] = new_vect.vect[x];
             }
 
         }
+
+        // Copy assignment.
 
         VectorClass &operator=(const VectorClass& new_vect)
         {
@@ -51,6 +67,8 @@ public:
             return *this;
         }
 
+        // Move assignment.
+
         VectorClass &operator=(const VectorClass&& new_vect)
         {
             delete [] vect;
@@ -63,6 +81,9 @@ public:
             }
             return *this;
         }
+
+        // Access item by reference.
+        // Throw an exception if out of range.
 
         T& operator[](int i)
         {
@@ -83,6 +104,8 @@ public:
             }
 
         }
+
+        // Return true if a vector ==  another vector.
 
         bool operator==(const VectorClass<T>& vec)
         {
@@ -106,6 +129,10 @@ public:
                 return false;
             }
         }
+
+        // Compares item by item.
+        // Return true if first different item in this is < in other.
+
         bool operator< (const VectorClass<T>& vec)
         {
             if(sizee==vec.sizee)
@@ -125,15 +152,19 @@ public:
             }
         }
 
+        // Return current size of vector.
+
         int size() const
         {
             return sizee;
         }
-
+        // Return size of current allocated array.
         int capacity() const
         {
             return capacityy;
         }
+
+        // Relocate to bigger space.
 
         int resize()
         {
@@ -154,7 +185,7 @@ public:
             }
             return capacityy ;
         }
-
+        // Return true if size is 0.
         bool empty()
         {
             if(sizee==0)
@@ -167,6 +198,8 @@ public:
             }
         }
 
+
+        //Overload operator << to print the vector by cout.
 
         friend ostream& operator << (ostream& out, VectorClass<T> vc)
         {
@@ -183,11 +216,16 @@ public:
 
         }
 
+        // Delete allocated memory
+
         virtual ~VectorClass()
         {
 
             delete [] vect;
         }
+
+        // Insert item at iterator
+        // Throw exception if invalid
 
         void insert(T* ite,int V )
         {
@@ -207,6 +245,9 @@ public:
             }
 
         }
+
+        // Add item to end of vec & return # of items
+		// Increase capacity of needed
 
         int push_back (T var)
         {
@@ -235,10 +276,16 @@ public:
             return sizee;
 
         }
+
+        // Return an iterator (T*)
+
         T* begin()
         {
             return this->vect;
         }
+
+        // Return an iterator (T*)
+
         T* end()
         {
             return this->begin()+size()-1;
@@ -254,6 +301,8 @@ public:
 
             this->sizee=0;
         }
+
+        // Remove and return last element in vec
 
         T pop_back() {
             T* newvect = new T[capacityy] ;
@@ -273,6 +322,10 @@ public:
             delete[]newvect ;
             return z ;
         }
+
+        // Remove item at iterator
+		// Throw exception if invalid iter
+
         void erase(T* ite){
             if(ite < this-> begin() || ite > this->end() ) {
                 cout << "not in range"<<endl;
@@ -286,6 +339,11 @@ public:
                 this->sizee--;
             }
         }
+
+        // Remove items between
+        // iterator 1 <= iterator 2 otherwise do nothing
+        // Throw exception if any iterator outside range
+
         void erase(T* ite1 , T* ite2){
             if(ite1 < this-> begin() || ite2 > this->end() ) {
                 cout << "not in range"<<endl;
